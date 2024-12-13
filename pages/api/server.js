@@ -5,7 +5,7 @@ const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 const TelegramBot = require('node-telegram-bot-api');
-const config = require('./config');
+const config = require('../../config');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const app = express();
@@ -26,7 +26,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(process.cwd(), 'public')));
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'dj2n3k4n2k3n4k23n4k23n4kj2n3k4j2h3g4k23h4',
@@ -131,7 +131,7 @@ app.get('/redirect/*', requireAuth, (req, res) => {
 
 function initializeDomainFiles() {
     for (const [linkId, siteName] of Object.entries(SITE_MAPPINGS)) {
-        const filePath = path.join(__dirname, `domains_${siteName}.txt`);
+        const filePath = path.join(process.cwd(), 'domains', `domains_${siteName}.txt`);
         if (!fs.existsSync(filePath)) {
             fs.writeFileSync(filePath, '', 'utf8');
         }
@@ -141,7 +141,7 @@ function initializeDomainFiles() {
 function readDomains(linkId) {
     try {
         const siteName = SITE_MAPPINGS[linkId];
-        const filePath = path.join(__dirname, `domains_${siteName}.txt`);
+        const filePath = path.join(process.cwd(), 'domains', `domains_${siteName}.txt`);
         if (fs.existsSync(filePath)) {
             return fs.readFileSync(filePath, 'utf8')
                 .split('\n')
@@ -156,7 +156,7 @@ function readDomains(linkId) {
 
 function saveDomains(linkId, domains) {
     const siteName = SITE_MAPPINGS[linkId];
-    const filePath = path.join(__dirname, `domains_${siteName}.txt`);
+    const filePath = path.join(process.cwd(), 'domains', `domains_${siteName}.txt`);
     fs.writeFileSync(filePath, domains.join('\n'));
 }
 
