@@ -1,0 +1,966 @@
+
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0ff">
+  <title>TrustPositif Advanced Cybersecurity Scanner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <style>
+        /* Core Animations */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes cyber-glow {
+            0% { text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff; }
+            50% { text-shadow: 0 0 5px #0ff, 0 0 15px #0ff, 0 0 25px #0ff; }
+            100% { text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff; }
+        }
+
+        @keyframes matrix-fall {
+            0% { 
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            85% {
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(1000%);
+                opacity: 0;
+            }
+        }
+
+        /* Base Styles */
+        :root {
+            --cyber-primary: #0ff;
+            --cyber-primary-dark: #0cc;
+            --cyber-bg: #001;
+            --cyber-bg-dark: #000;
+            --cyber-grid: rgba(0, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--cyber-bg);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0,255,255,0.1), transparent 100%),
+                linear-gradient(0deg, rgba(0,0,30,1) 0%, rgba(0,0,60,0.9) 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px),
+                linear-gradient(var(--cyber-grid) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            color: var(--cyber-primary);
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .matrix-rain span {
+            position: absolute;
+            animation: matrix-fall 10s linear infinite;
+            opacity: 0;
+        }
+
+        /* Glitch Effects */
+        .glitch {
+            position: relative;
+            animation: glitch 0.5s infinite;
+            animation-timing-function: step-end;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            clip: rect(0, 900px, 0, 0);
+        }
+
+        .glitch::before {
+            text-shadow: -1px 0 red;
+            animation: glitch 0.5s infinite;
+            animation-timing-function: step-end;
+        }
+
+        .glitch::after {
+            text-shadow: 1px 0 blue;
+            animation: glitch 0.7s infinite;
+            animation-timing-function: step-end;
+        }
+
+        /* Scanner Effect */
+        .scan-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-effect::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--cyber-primary),
+                transparent
+            );
+            animation: scanline 2s linear infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            :root {
+                --grid-size: 15px;
+            }
+            
+            body::before {
+                background-size: var(--grid-size) var(--grid-size);
+            }
+
+            .matrix-rain {
+                font-size: 10px;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            :root {
+                --grid-size: 20px;
+            }
+            
+            body::before {
+                background-size: var(--grid-size) var(--grid-size);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: var(--cyber-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--cyber-primary);
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cyber-bg-dark);
+        }
+
+        /* Cyber Components */
+        .cyber-container {
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.1),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .cyber-panel {
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 255, 0.3),
+                transparent
+            );
+        }
+
+        .cyber-panel::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 255, 0.3),
+                transparent
+            );
+        }
+
+        /* Hexagon Stats */
+        .cyber-stat {
+            position: relative;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            transition: all 0.3s ease;
+            background: rgba(0, 20, 40, 0.95);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .cyber-stat:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.2),
+                inset 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .cyber-stat::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            background: inherit;
+            clip-path: inherit;
+            z-index: -1;
+        }
+
+        /* Cyber Input */
+        .cyber-input {
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-input:focus {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.2),
+                inset 0 0 20px rgba(0, 255, 255, 0.2);
+            outline: none;
+        }
+
+        /* Cyber Buttons */
+        .cyber-button {
+            position: relative;
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: var(--cyber-primary);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(0, 255, 255, 0.1), 
+                transparent
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .cyber-button:hover::before {
+            transform: translateX(100%);
+        }
+
+        .cyber-button:hover {
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.2),
+                inset 0 0 20px rgba(0, 255, 255, 0.2);
+            text-shadow: 0 0 8px var(--cyber-primary);
+        }
+
+        .cyber-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shimmer 2s infinite linear;
+        }
+
+        .status-badge-blocked {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+        }
+
+        .status-badge-secure {
+            background: rgba(0, 255, 128, 0.1);
+            border: 1px solid rgba(0, 255, 128, 0.2);
+            color: #00ff80;
+        }
+
+        /* Loading Animations */
+        .cyber-loading {
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .cyber-loading::before,
+        .cyber-loading::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--cyber-primary);
+            animation: spin 1s linear infinite;
+        }
+
+        .cyber-loading::before {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .cyber-loading::after {
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border-top-color: var(--cyber-primary-dark);
+            animation-duration: 0.8s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .cyber-stat {
+                margin: 0.5rem 0;
+            }
+
+            .cyber-button {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .status-badge {
+                padding: 0.25rem 0.75rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Tablet Optimizations */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .cyber-stat {
+                margin: 0.75rem 0;
+            }
+
+            .cyber-button {
+                padding: 1rem;
+            }
+        }
+
+        /* Dark Mode Enhancements */
+        @media (prefers-color-scheme: dark) {
+            .cyber-container {
+                background: rgba(0, 5, 10, 0.9);
+            }
+
+            .cyber-panel {
+                background: rgba(0, 10, 20, 0.95);
+            }
+
+            .cyber-input {
+                background: rgba(0, 5, 10, 0.9);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+  <!-- Matrix Rain Background -->
+  <div class="matrix-rain" id="matrixRain"></div>
+
+  <!-- Main Container -->
+  <div class="container max-w-6xl mx-auto py-6 md:py-12 px-4 relative z-10">
+    <!-- Cyber Header -->
+    <div class="text-center mb-8 md:mb-12">
+      <div class="inline-block">
+        <!-- Radar Animation -->
+        <div class="w-20 h-20 md:w-24 md:h-24 mx-auto mb-6 relative">
+          <div class="absolute inset-0 border-2 border-cyan-400/30 rounded-full"></div>
+          <div class="absolute inset-0 border-2 border-cyan-400/20 rounded-full animate-ping"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <i class="fas fa-shield-alt text-cyan-400 text-3xl md:text-4xl animate-pulse"></i>
+          </div>
+        </div>
+
+        <!-- Title with Glitch Effect -->
+        <h1 class="glitch text-3xl md:text-4xl font-black mb-2 tracking-wider text-cyan-400" data-text="TRUSTPOSITIF">
+          TRUSTPOSITIF
+        </h1>
+
+        <!-- Subtitle with Cyber Glow -->
+        <div class="flex items-center justify-center space-x-3">
+          <span class="h-px w-8 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></span>
+          <p class="text-sm md:text-lg font-light tracking-widest text-cyan-400/70">
+            ADVANCED SECURITY SCANNER
+          </p>
+          <span class="h-px w-8 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Interface Container -->
+    <div class="cyber-container rounded-2xl overflow-hidden backdrop-blur-sm">
+      <!-- Stats Dashboard -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 p-4 md:p-8 border-b border-cyan-500/20">
+        <!-- Total Scanned -->
+        <div class="cyber-stat p-4 md:p-6">
+          <div class="flex flex-col items-center">
+            <div class="relative mb-2">
+              <i class="fas fa-globe text-cyan-400 text-xl md:text-2xl"></i>
+              <div class="absolute inset-0 animate-ping opacity-30"></div>
+            </div>
+            <p class="text-xs text-cyan-400/70 uppercase tracking-wider mb-1">Total Pengecekan</p>
+            <h3 class="text-2xl font-bold text-cyan-400" id="totalScanned">0</h3>
+          </div>
+        </div>
+
+        <!-- Security Threats -->
+        <div class="cyber-stat p-4 md:p-6">
+          <div class="flex flex-col items-center">
+            <div class="relative mb-2">
+              <i class="fas fa-radiation text-red-500 text-xl md:text-2xl"></i>
+              <div class="absolute inset-0 animate-ping opacity-30"></div>
+            </div>
+            <p class="text-xs text-cyan-400/70 uppercase tracking-wider mb-1">Nawala</p>
+            <h3 class="text-2xl font-bold text-red-500" id="totalBlocked">0</h3>
+          </div>
+        </div>
+
+        <!-- Secure Domains -->
+        <div class="cyber-stat p-4 md:p-6">
+          <div class="flex flex-col items-center">
+            <div class="relative mb-2">
+              <i class="fas fa-shield-check text-emerald-400 text-xl md:text-2xl"></i>
+              <div class="absolute inset-0 animate-ping opacity-30"></div>
+            </div>
+            <p class="text-xs text-cyan-400/70 uppercase tracking-wider mb-1">Aman</p>
+            <h3 class="text-2xl font-bold text-emerald-400" id="totalSafe">0</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scanner Interface -->
+      <div class="p-4 md:p-8 space-y-6">
+        <!-- Input Section -->
+        <div class="relative">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+              <i class="fas fa-terminal text-cyan-400"></i>
+            </div>
+            <h2 class="text-xl font-bold text-white tracking-wide flex items-center">
+              Security Scanner
+              <span class="ml-2 px-2 py-1 text-xs bg-cyan-500/10 rounded-full text-cyan-400 border border-cyan-500/20">
+                v2.1
+              </span>
+            </h2>
+          </div>
+
+          <!-- Domain Input -->
+          <div class="relative group">
+            <textarea class="cyber-input w-full px-6 py-4 rounded-xl text-white placeholder-gray-500 h-48 resize-none" id="domainInput" placeholder="Enter domains to analyze (max 1000)&#10;example.com&#10;test.com"></textarea>
+            <div class="scanner-line opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute right-4 top-4 flex items-center space-x-2 bg-[rgba(0,16,32,0.7)] px-4 py-2 rounded-full border border-cyan-500/20">
+              <i class="fas fa-info-circle text-cyan-400"></i>
+              <span class="text-xs text-cyan-400/70">MAX 1000 DOMAINS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+          <button id="checkButton" class="cyber-button flex-1 py-4 px-6 rounded-xl font-bold tracking-wider group">
+            <div class="flex items-center justify-center space-x-3">
+              <div class="w-6 h-6 flex items-center justify-center relative">
+                <div class="cyber-loading loading hidden"></div>
+                <i class="fas fa-shield-alt text-cyan-400 group-hover:animate-pulse"></i>
+              </div>
+              <span class="text-cyan-400">CHECK DOMAIN</span>
+            </div>
+          </button>
+
+          <button id="resetButton" class="cyber-button flex-1 py-4 px-6 rounded-xl font-bold tracking-wider">
+            <div class="flex items-center justify-center space-x-3">
+              <i class="fas fa-power-off text-red-400"></i>
+              <span class="text-red-400">RESET SYSTEM</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message hidden">
+          <div class="cyber-panel p-4 rounded-xl flex items-center space-x-3 bg-red-500/10 border-red-500/20">
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500/10">
+              <i class="fas fa-radiation text-red-400 animate-spin"></i>
+            </div>
+            <p class="text-red-400 text-sm"></p>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="result-section">
+          <div class="cyber-panel rounded-xl overflow-hidden">
+            <!-- Results Header -->
+            <div class="bg-[rgba(0,16,32,0.5)] p-4 flex flex-col md:flex-row md:items-center justify-between border-b border-cyan-500/20">
+              <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+                  <i class="fas fa-network-wired text-cyan-400"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white tracking-wide">Security Analysis</h3>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 px-4 py-2 rounded-full bg-[rgba(0,16,32,0.3)] border border-cyan-500/20">
+                  <i class="fas fa-clock text-cyan-400"></i>
+                  <span class="text-sm text-cyan-400" id="scanTime">0.0s</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="max-h-96 overflow-y-auto cyber-scroll">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-[rgba(0,16,32,0.5)]">
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-cyan-400/70 uppercase tracking-wider">
+                      Target Domain
+                    </th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-cyan-400/70 uppercase tracking-wider">
+                      Security Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="resultBody" class="divide-y divide-cyan-500/10"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matrix Rain Script -->
+  <script>
+    function createMatrixRain() {
+      const container = document.getElementById('matrixRain');
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+      const columns = Math.floor(window.innerWidth / 20);
+
+      for (let i = 0; i < columns; i++) {
+        const span = document.createElement('span');
+        span.style.left = i * 20 + 'px';
+        span.style.animationDelay = Math.random() * 5 + 's';
+        span.textContent = characters[Math.floor(Math.random() * characters.length)];
+        container.appendChild(span);
+      }
+    }
+
+    createMatrixRain();
+    window.addEventListener('resize', () => {
+      document.getElementById('matrixRain').innerHTML = '';
+      createMatrixRain();
+    });
+  </script>
+  <!-- Core Application Script -->
+  <script>
+    class CyberSecurityScanner {
+    constructor() {
+        this.API_URL = '';
+        this.MAX_DOMAINS = 1000;
+        this.domainRegex = /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,}$/i;
+        this.stats = {
+            scanned: 0,
+            blocked: 0,
+            safe: 0
+        };
+        this.initializeElements();
+        this.loadConfig().then(() => {
+            this.initializeEventListeners();
+        });
+    }
+
+    async loadConfig() {
+        try {
+            const response = await fetch('/api/config');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const config = await response.json();
+            this.API_URL = config.API_ENDPOINTS.TRUST_POSITIF;
+        } catch (error) {
+            this.showNotification('Error loading config', 'error');
+        }
+    }
+
+    async checkDomain(domain) {
+    try {
+        // Bersihkan domain dari prefix dan suffix
+        const cleanDomain = domain
+            .replace(/^https?:\/\//, '')  // Hapus http:// atau https://
+            .replace(/^www\./, '')        // Hapus www.
+            .replace(/\/$/, '');          // Hapus trailing slash
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+        const response = await fetch('/api/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ domain: cleanDomain }), // Gunakan domain yang sudah dibersihkan
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error(`Network error: ${response.status}`);
+        const data = await response.json();
+        
+        this.stats.scanned++;
+        if (data.values?.[0]?.Status === "Ada") {
+            this.stats.blocked++;
+        } else if (data.values?.[0]?.Status === "Tidak Ada") {
+            this.stats.safe++;
+        }
+        this.updateStats();
+
+        return {
+            domain: cleanDomain, // Tampilkan domain yang sudah dibersihkan
+            status: data.values?.[0]?.Status,
+            error: null
+        };
+    } catch (error) {
+        this.stats.scanned++;
+        this.updateStats();
+        return {
+            domain: domain.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, ''),
+            status: "Error",
+            error: "Gagal memeriksa domain. Silakan coba lagi nanti."
+        };
+    }
+}
+
+initializeElements() {
+    this.elements = {
+        domainInput: document.querySelector('#domainInput'),
+        checkButton: document.querySelector('#checkButton'),
+        resetButton: document.querySelector('#resetButton'),
+        resultBody: document.querySelector('#resultBody'),
+        errorMessage: document.querySelector('.error-message'),
+        loadingIcon: document.querySelector('.cyber-loading'),
+        scanTime: document.querySelector('#scanTime'),
+        stats: {
+            scanned: document.querySelector('#totalScanned'),
+            blocked: document.querySelector('#totalBlocked'),
+            safe: document.querySelector('#totalSafe')
+        }
+    };
+}
+
+    initializeEventListeners() {
+        this.elements.domainInput.addEventListener('input', this.handleInput.bind(this));
+        this.elements.checkButton.addEventListener('click', this.handleScan.bind(this));
+        this.elements.resetButton.addEventListener('click', this.handleReset.bind(this));
+    }
+
+    createRippleEffect(event, element) {
+        const ripple = document.createElement('div');
+        const rect = element.getBoundingClientRect();
+        ripple.className = 'absolute bg-cyan-400/20 rounded-full pointer-events-none';
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+        ripple.style.width = ripple.style.height = `${Math.max(rect.width, rect.height)}px`;
+        ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        ripple.style.animation = 'ripple 0.6s ease-out forwards';
+        element.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+    }
+
+    updateStats(animate = true) {
+    const updateValue = (element, value) => {
+        if (animate) {
+            gsap.to(element, {
+                textContent: value,
+                snap: { textContent: 1 },
+                duration: 1,
+                ease: "power2.out"
+            });
+        } else {
+            element.textContent = value;
+        }
+    };
+
+    updateValue(this.elements.stats.scanned, this.stats.scanned);
+    updateValue(this.elements.stats.blocked, this.stats.blocked);
+    updateValue(this.elements.stats.safe, this.stats.safe);
+}
+
+    showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `fixed bottom-4 right-4 px-6 py-3 rounded-xl flex items-center space-x-3 transform translate-y-20 opacity-0 z-50 cyber-panel ${type === 'success' ? 'border-cyan-500/20' : 'border-red-500/20'}`;
+        notification.innerHTML = `
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg ${type === 'success' ? 'bg-cyan-500/10 border-cyan-500/20' : 'bg-red-500/10 border-red-500/20'} border">
+                <i class="fas ${type === 'success' ? 'fa-check text-cyan-400' : 'fa-radiation text-red-400'} ${type === 'success' ? '' : 'animate-spin'}"></i>
+            </div>
+            <span class="${type === 'success' ? 'text-cyan-400' : 'text-red-400'} font-medium">${message}</span>
+        `;
+        document.body.appendChild(notification);
+        gsap.to(notification, {
+            y: -20,
+            opacity: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+            onComplete: () => {
+                setTimeout(() => {
+                    gsap.to(notification, {
+                        y: 20,
+                        opacity: 0,
+                        duration: 0.5,
+                        ease: "back.in(1.7)",
+                        onComplete: () => notification.remove()
+                    });
+                }, 3000);
+            }
+        });
+    }
+
+    displayResults(results) {
+        this.elements.resultBody.innerHTML = '';
+        results.forEach((result, index) => {
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-[rgba(0,30,60,0.3)] transition-colors';
+            row.style.opacity = '0';
+            const statusHtml = result.error ?
+                `<span class="status-badge bg-yellow-500/10 border-yellow-500/20">
+                    <i class="fas fa-exclamation-triangle text-yellow-400 mr-2"></i>
+                    <span class="text-yellow-400">System Error</span>
+                </span>
+                <p class="text-xs text-yellow-400/70 mt-1">${this.escapeHtml(result.error)}</p>` :
+                result.status === "Ada" ?
+                    `<span class="status-badge status-badge-blocked">
+                        <i class="fas fa-radiation text-red-400 mr-2"></i>
+                        <span class="text-red-400">Nawala</span>
+                    </span>` :
+                    `<span class="status-badge status-badge-secure">
+                        <i class="fas fa-shield-check text-emerald-400 mr-2"></i>
+                        <span class="text-emerald-400">Aman</span>
+                    </span>`;
+            row.innerHTML = `
+                <td class="py-4 px-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+                            <i class="fas fa-globe text-cyan-400"></i>
+                        </div>
+                        <span class="text-white/90 font-medium">${this.escapeHtml(result.domain)}</span>
+                    </div>
+                </td>
+                <td class="py-4 px-6">${statusHtml}</td>
+            `;
+            this.elements.resultBody.appendChild(row);
+            gsap.fromTo(row, {
+                opacity: 0,
+                x: -20
+            }, {
+                opacity: 1,
+                x: 0,
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: "power2.out"
+            });
+        });
+        this.showNotification('Security Analysis Complete', 'success');
+    }
+
+    setLoading(isLoading) {
+        this.elements.checkButton.disabled = isLoading;
+        this.elements.loadingIcon.classList.toggle('hidden', !isLoading);
+        this.elements.checkButton.classList.toggle('animate-pulse', isLoading);
+    }
+
+    showError(message) {
+        const errorText = this.elements.errorMessage.querySelector('p');
+        errorText.textContent = message;
+        this.elements.errorMessage.classList.remove('hidden');
+        gsap.fromTo(this.elements.errorMessage, {
+            opacity: 0,
+            y: -20
+        }, {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: "power2.out"
+        });
+        this.showNotification(message, 'error');
+    }
+
+    escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    handleInput(event) {
+        const lines = event.target.value.split('\n').filter(line => line.trim() !== '');
+        if (lines.length > this.MAX_DOMAINS) {
+            this.showError(`System limit: Maximum ${this.MAX_DOMAINS} domains per scan`);
+            event.target.value = lines.slice(0, this.MAX_DOMAINS).join('\n');
+        } else {
+            this.elements.errorMessage.classList.add('hidden');
+        }
+    }
+
+    async handleScan(event) {
+    this.createRippleEffect(event, event.currentTarget);
+    const startTime = performance.now();
+    
+    // Bersihkan dan filter domains
+    const domains = this.elements.domainInput.value
+        .split('\n')
+        .map(d => d.trim())
+        .map(d => d
+            .replace(/^https?:\/\//, '')  // Hapus http:// atau https://
+            .replace(/^www\./, '')        // Hapus www.
+            .replace(/\/$/, '')           // Hapus trailing slash
+        )
+        .filter(d => d && this.domainRegex.test(d));
+
+    if (domains.length === 0) {
+        this.showError('Please enter valid domains (example: domain.com)');
+        return;
+    }
+
+    this.elements.errorMessage.classList.add('hidden');
+    this.elements.resultBody.innerHTML = '';
+    this.setLoading(true);
+    this.stats = {
+        scanned: 0,
+        blocked: 0,
+        safe: 0
+    };
+    this.updateStats(false);
+
+    try {
+        const results = await Promise.all(domains.map(domain => this.checkDomain(domain)));
+        this.displayResults(results);
+    } catch (error) {
+        this.showError('System Error: ' + error.message);
+    } finally {
+        this.setLoading(false);
+        const endTime = performance.now();
+        const duration = ((endTime - startTime) / 1000).toFixed(1);
+        this.elements.scanTime.textContent = `${duration}s`;
+    }
+}
+
+    handleReset(event) {
+        this.createRippleEffect(event, event.currentTarget);
+        gsap.to('.result-section', {
+            opacity: 0,
+            y: 20,
+            duration: 0.3,
+            onComplete: () => {
+                this.elements.domainInput.value = '';
+                this.elements.resultBody.innerHTML = '';
+                this.elements.errorMessage.classList.add('hidden');
+                this.elements.scanTime.textContent = '0.0s';
+                this.stats = {
+                    scanned: 0,
+                    blocked: 0,
+                    safe: 0
+                };
+                this.updateStats(false);
+                gsap.to('.result-section', {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.3
+                });
+                this.showNotification('System Reset Complete', 'success');
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const app = new CyberSecurityScanner();
+});
+  </script>
+</body>
+</html>

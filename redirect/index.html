@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0ff">
+    <title>Auto Redirect Domain - Cyberpunk Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --cyber-primary: #0ff;
+            --cyber-primary-dark: #0cc;
+            --cyber-bg: #001;
+            --cyber-bg-dark: #000;
+            --cyber-grid: rgba(0, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--cyber-bg);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0,255,255,0.1), transparent 100%),
+                linear-gradient(0deg, rgba(0,0,30,1) 0%, rgba(0,0,60,0.9) 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px),
+                linear-gradient(var(--cyber-grid) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            color: var(--cyber-primary);
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .matrix-rain span {
+            position: absolute;
+            animation: matrix-fall 10s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes matrix-fall {
+            0% { transform: translateY(-100%); opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translateY(1000%); opacity: 0; }
+        }
+
+        .cyber-container {
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .cyber-input {
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-button {
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: var(--cyber-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-button:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            text-shadow: 0 0 8px var(--cyber-primary);
+        }
+
+        .cyber-button {
+    /* ... style yang sudah ada ... */
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Tambahkan style khusus untuk tombol logout */
+#logoutBtn {
+    background: rgba(255, 50, 50, 0.1);
+    border-color: rgba(255, 50, 50, 0.3);
+    color: #ff6b6b;
+    transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background: rgba(255, 50, 50, 0.2);
+    border-color: rgba(255, 50, 50, 0.5);
+    box-shadow: 0 0 20px rgba(255, 50, 50, 0.2);
+    text-shadow: 0 0 8px #ff6b6b;
+}
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+    <div class="matrix-rain" id="matrixRain"></div>
+
+    <div class="absolute top-4 right-4 z-20">
+        <button id="logoutBtn" class="cyber-button flex items-center space-x-2 px-4 py-2">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </div>
+
+    <div class="container max-w-3xl mx-auto py-6 md:py-12 px-4 relative z-10">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-black mb-4 tracking-wider text-cyan-400">
+                AUTO REDIRECT DOMAIN
+            </h1>
+        </div>
+
+        <div class="cyber-container rounded-2xl p-6 md:p-8 space-y-6">
+            <div class="mb-4">
+                <select id="linkIdSelect" class="w-full bg-gray-900/50 border border-cyan-500/20 rounded-lg px-4 py-2 text-cyan-400 focus:outline-none focus:border-cyan-500/50 cyber-input">
+                    <option value="">-- Pilih Situs --</option>
+                    <option value="75">MAIN55</option>
+                    <option value="19">DANA55</option>
+                    <option value="25">GOKU55</option>
+                    <option value="30">GOL33</option>
+                    <option value="35">NAMI55</option>
+                    <option value="40">FANTA55</option>
+                    <option value="45">MEKAR55</option>
+                    <option value="50">KENZO55</option>
+                    <option value="54">NONA55</option>
+                    <option value="59">BASS99</option>
+                    <option value="64">TOPSPIN88</option>
+                </select>
+            </div>
+            
+            <div class="space-y-2">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-globe text-cyan-400"></i>
+                    <p class="text-cyan-400" id="currentUrl">Domain Sekarang: </p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-link text-cyan-400"></i>
+                    <p class="text-cyan-400" id="currentShortUrl">Short URL: </p>
+                </div>
+            </div>
+
+            <form id="editForm" class="space-y-4">
+                <div class="space-y-2">
+                    <label for="newUrl" class="text-cyan-400 flex items-center space-x-2">
+                        <i class="fas fa-edit"></i>
+                        <span>Domain Baru:</span>
+                    </label>
+                    <input type="url" id="newUrl" name="newUrl" required class="cyber-input" placeholder="https://example.com">
+                </div>
+                <button type="submit" class="cyber-button w-full">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    Update Domain
+                </button>
+            </form>
+
+            <div class="space-y-4">
+                <h2 class="text-xl font-bold text-cyan-400 flex items-center space-x-2">
+                    <i class="fas fa-list"></i>
+                    <span>Edit Domain List</span>
+                </h2>
+                <textarea id="domainList" rows="10" class="cyber-input resize-none" placeholder="Masukkan daftar domain..."></textarea>
+                <button id="saveDomains" class="cyber-button w-full">
+                    <i class="fas fa-save mr-2"></i>
+                    Simpan Domain
+                </button>
+            </div>
+
+            <div id="saveMessage" class="hidden">
+                <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex items-center space-x-3">
+                    <i class="fas fa-check-circle text-emerald-400"></i>
+                    <span class="text-emerald-400">Domain Berhasil Disimpan</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      class AutoRedirectManager {
+    constructor() {
+        this.domainLists = {
+            '75': [], // MAIN55
+            '19': [], // DANA55
+            '25': [], // GOKU55
+            '30': [], // GOL33
+            '35': [], // NAMI55
+            '40': [], // FANTA55
+            '45': [], // MEKAR55
+            '50': [], // KENZO55
+            '54': [], // NONA55
+            '59': [], // BASS99
+            '64': []  // TOPSPIN88
+        };
+        
+        this.initializeElements();
+        this.setupEventListeners();
+        this.loadConfig();
+        this.loadDomains();
+    }
+
+    initializeElements() {
+        this.elements = {
+            linkIdSelect: document.getElementById('linkIdSelect'),
+            currentUrl: document.getElementById('currentUrl'),
+            currentShortUrl: document.getElementById('currentShortUrl'),
+            editForm: document.getElementById('editForm'),
+            domainList: document.getElementById('domainList'),
+            saveDomainsBtn: document.getElementById('saveDomains'),
+            saveMessage: document.getElementById('saveMessage'),
+            logoutBtn: document.getElementById('logoutBtn'),
+        };
+    }
+
+    setupEventListeners() {
+        this.elements.linkIdSelect.addEventListener('change', async () => {
+            const selectedId = this.elements.linkIdSelect.value;
+            if (selectedId) {
+                await this.getCurrentLinkData(selectedId);
+                this.updateDomainListDisplay(selectedId);
+            }
+        });
+
+        this.elements.logoutBtn.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch('/api/auth/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+
+                        if (response.ok) {
+                            window.location.href = '/gogo';
+                        } else {
+                            this.showNotification('Gagal logout', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                        this.showNotification('Gagal logout', 'error');
+                    }
+                });
+
+        this.elements.editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newUrl = document.getElementById('newUrl').value;
+            const selectedId = this.elements.linkIdSelect.value;
+            if (selectedId) {
+                await this.updateDomain(selectedId, newUrl);
+            } else {
+                this.showNotification('Silakan pilih situs terlebih dahulu', 'error');
+            }
+        });
+
+        this.elements.saveDomainsBtn.addEventListener('click', async () => {
+            const selectedId = this.elements.linkIdSelect.value;
+            if (selectedId) {
+                await this.saveDomains(selectedId);
+            } else {
+                this.showNotification('Silakan pilih situs terlebih dahulu', 'error');
+            }
+        });
+    }
+
+    updateDomainListDisplay(linkId) {
+        this.elements.domainList.value = this.domainLists[linkId].join('\n');
+    }
+
+    async loadConfig() {
+        try {
+            const response = await fetch('/api/config');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const config = await response.json();
+            this.currentLinkId = config.LINK_ID;
+            console.log('Config loaded:', config);
+        } catch (error) {
+            console.error('Error loading config:', error);
+            this.showNotification('Error loading config', 'error');
+        }
+    }
+
+    async loadDomains() {
+        try {
+            const response = await fetch('/api/domains/all');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const allDomains = await response.json();
+            
+            // Update domain lists untuk setiap Link ID
+            for (const [linkId, domains] of Object.entries(allDomains)) {
+                this.domainLists[linkId] = domains;
+            }
+            
+            // Update tampilan jika ada Link ID yang dipilih
+            const selectedId = this.elements.linkIdSelect.value;
+            if (selectedId) {
+                this.updateDomainListDisplay(selectedId);
+            }
+        } catch (error) {
+            console.error('Error loading domains:', error);
+            this.showNotification('Error loading domains', 'error');
+        }
+    }
+
+    async getCurrentLinkData(linkId) {
+        try {
+            const response = await fetch(`/api/links/${linkId}`);
+            if (!response.ok) throw new Error('Failed to load link data');
+            const data = await response.json();
+            
+            this.currentDomain = data.destination_url || 'Error loading domain';
+            this.shortUrl = data.short_url || 'Error loading URL';
+            
+            this.elements.currentUrl.textContent = `Domain Sekarang: ${this.currentDomain}`;
+            this.elements.currentShortUrl.textContent = `Short URL: ${this.shortUrl}`;
+            console.log('Link data loaded:', data);
+        } catch (error) {
+            console.error('Error fetching link data:', error);
+            this.elements.currentUrl.textContent = 'Domain Sekarang: Error loading domain';
+            this.elements.currentShortUrl.textContent = 'Short URL: Error loading URL';
+            this.showNotification('Error loading domain data', 'error');
+        }
+    }
+
+    async updateDomain(linkId, newUrl) {
+        try {
+            const response = await fetch(`/api/links/${linkId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ destination_url: newUrl })
+            });
+
+            if (!response.ok) throw new Error('Network response was not ok');
+            await this.getCurrentLinkData(linkId);
+            this.showNotification('Domain berhasil diupdate', 'success');
+        } catch (error) {
+            console.error('Error updating domain:', error);
+            this.showNotification('Gagal mengupdate domain', 'error');
+        }
+    }
+
+    async saveDomains(linkId) {
+        const domains = this.elements.domainList.value
+            .split('\n')
+            .map(d => d.trim())
+            .filter(d => d);
+        
+        try {
+            const response = await fetch(`/api/domains/${linkId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ domains })
+            });
+
+            if (!response.ok) throw new Error('Failed to save domains');
+            this.domainLists[linkId] = domains;
+            this.showNotification('Domain berhasil disimpan', 'success');
+        } catch (error) {
+            this.showNotification('Gagal menyimpan domain', 'error');
+        }
+    }
+
+    showNotification(message, type = 'success') {
+        const messageDiv = this.elements.saveMessage.querySelector('span');
+        if (messageDiv) {
+            messageDiv.textContent = message;
+        }
+        
+        this.elements.saveMessage.classList.remove('hidden');
+        gsap.fromTo(this.elements.saveMessage, 
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.5 }
+        );
+        
+        setTimeout(() => {
+            gsap.to(this.elements.saveMessage, {
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                onComplete: () => this.elements.saveMessage.classList.add('hidden')
+            });
+        }, 3000);
+    }
+}
+
+function createMatrixRain() {
+    const container = document.getElementById('matrixRain');
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+    const columns = Math.floor(window.innerWidth / 20);
+    
+    container.innerHTML = '';
+    
+    for (let i = 0; i < columns; i++) {
+        const column = document.createElement('div');
+        column.style.position = 'absolute';
+        column.style.left = `${i * 20}px`;
+        column.style.top = '0';
+        column.style.pointerEvents = 'none';
+        
+        const chars = document.createElement('span');
+        chars.textContent = characters[Math.floor(Math.random() * characters.length)];
+        chars.style.animation = 'matrix-fall 10s linear infinite';
+        chars.style.animationDelay = `${Math.random() * 5}s`;
+        
+        column.appendChild(chars);
+        container.appendChild(column);
+    }
+    
+    setInterval(() => {
+        const columns = container.children;
+        for (let column of columns) {
+            const chars = column.children[0];
+            chars.textContent = characters[Math.floor(Math.random() * characters.length)];
+        }
+    }, 100);
+}
+
+window.addEventListener('resize', createMatrixRain);
+
+document.addEventListener('DOMContentLoaded', () => {
+    createMatrixRain();
+    const app = new AutoRedirectManager();
+});
+
+
+    </script>
+    
+</body>
+</html>
