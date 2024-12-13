@@ -657,7 +657,7 @@
 
     async loadConfig() {
         try {
-            const response = await fetch('/pages/api/config');
+            const response = await fetch('/api/config');
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const config = await response.json();
             this.API_URL = config.API_ENDPOINTS.TRUST_POSITIF;
